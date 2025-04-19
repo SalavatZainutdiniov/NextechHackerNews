@@ -10,10 +10,11 @@
     <div class="text-red-500">{{ error }}</div>
     }
     @else {
-    <div class="stories-grid">
+    <div class="stories-grid mb-4">
         @for (story of stories; track story.id){
         <app-newest-story [story]="story"></app-newest-story>
         }
     </div>
+    <app-pagination [pagination]="this.pagination"></app-pagination>
     }
 </div>

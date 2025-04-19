@@ -9,6 +9,6 @@ export interface NewestStoriesResponseDto {
     pageIndex: number;
     pageSize: number;
     totalPages: number;
-    itemsCount: number;
+    totalItemsCount: number;
     stories: StoryDto[];
 }

@@ -1,0 +1,40 @@
+<div class="pagination">
+    <p class="text-sm text-white">
+        Showing
+        <span class="font-medium">{{this.startItemIndex}}</span>
+        to
+        <span class="font-medium">{{this.endItemIndex}}</span>
+        of
+        <span class="font-medium">{{this.pagination.totalItemsCount}}</span>
+        results
+    </p>
+    <nav class=" inline-flex -space-x-px" aria-label="Pagination">
+        <a href="#" class="page-button-left">
+            <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd"
+                    d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
+                    clip-rule="evenodd" />
+            </svg>
+        </a>
+
+        @if (this.pageFrom > 1){<span class="three-dots">...</span>}
+
+        @for (page of this.pages; track page) {
+        @if (page == this.pagination.selectedPage){
+        <a href="#" aria-current="page" class="page-active">{{page}}</a>
+        }@else {
+        <a href="#" class="page">{{page}}</a>
+        }
+        }
+
+        @if (this.pageTo < this.pagination.totalPages){ <span class="three-dots">...</span>}
+
+            <a href="#" class="page-button-right">
+                <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                    <path fill-rule="evenodd"
+                        d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                        clip-rule="evenodd" />
+                </svg>
+            </a>
+    </nav>
+</div>

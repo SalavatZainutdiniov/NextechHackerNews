@@ -27,7 +27,7 @@ export class NewestStoriesService {
       pageIndex: 1,
       pageSize: 12,
       totalPages: 10,
-      itemsCount: 100,
+      totalItemsCount: 100,
       stories: stories
     }).pipe(
       delay(2000)

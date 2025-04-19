@@ -8,7 +8,7 @@ namespace NewestStories.Models.Dto
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int TotalPages { get; set; }
-        public int ItemsCount { get; set; }
+        public int TotalItemsCount { get; set; }
         
         public required List<StoryDto> Stories { get; set; }
     }
