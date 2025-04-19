@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.story-card{
+    @apply bg-gray-800 text-white rounded-xl p-5
+}
+
+.story-card-header{
+    @apply text-xl font-semibold mb-3 text-white
+}
+
+.story-card-url{
+    @apply text-blue-400 hover:underline
+}

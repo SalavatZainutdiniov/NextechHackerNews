@@ -1,0 +1,19 @@
+<div class="p-4">
+    <div class="flex mb-4">
+        <app-search-bar class="flex-grow" (search)="onSearch($event)"></app-search-bar>
+    </div>
+    @if (loading)
+    {
+    <div class="text-gray-600">Loading...</div>
+    }
+    @else if (error) {
+    <div class="text-red-500">{{ error }}</div>
+    }
+    @else {
+    <div class="stories-grid">
+        @for (story of stories; track story.id){
+        <app-newest-story [story]="story"></app-newest-story>
+        }
+    </div>
+    }
+</div>

@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+.search-bar{
+    @apply flex items-center bg-gray-800 rounded-lg px-3 py-1 focus-within:ring-2 ring-blue-500
+}
+
+.search-bar-input{
+    @apply flex-grow bg-transparent outline-none text-white placeholder-gray-400 w-48 sm:w-64
+}

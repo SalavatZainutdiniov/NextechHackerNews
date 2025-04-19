@@ -4,6 +4,6 @@
 Should I filter such stories or just show that the story has no URL?
 
 // Regenerate
-typegen generate -p 'api\NewestStories\' --output-folder "C:\Projects\Coding\NextechHackerNews\client\src\app\newest-stories\_models"
+typegen generate -p 'api\NewestStories\' --output-folder "C:\Projects\Coding\NextechHackerNews\client\src\app\features\newest-stories\models"
 
-Добавить CORS на сервер-сайд или кей ваулт
+Add CORS on the server side or keyvault.

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { StoryDto } from '../../models/story-dto';
 
 @Component({
   selector: 'app-newest-story',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './newest-story.component.css'
 })
 export class NewestStoryComponent {
-
+  @Input() story!: StoryDto;
 }
