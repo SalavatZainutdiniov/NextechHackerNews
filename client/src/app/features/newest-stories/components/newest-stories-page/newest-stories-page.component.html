@@ -2,12 +2,12 @@
     <div class="flex mb-4">
         <app-search-bar class="flex-grow" (search)="onSearch($event)"></app-search-bar>
     </div>
-    @if (error) {
-    <div class="text-red-500">{{ error }}</div>
+    @if (error()) {
+    <div class="text-red-500">{{ error() }}</div>
     }
     @else {
     @if (isInit){
-    <app-pagination [pagination]="this.pagination" (change)="onPageChanged($event)"></app-pagination>
+    <app-pagination [pagination]="this.pagination()" (change)="onPageChanged($event)"></app-pagination>
     }
 
     <div class="relative">

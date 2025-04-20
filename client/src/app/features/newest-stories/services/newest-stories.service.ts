@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {  delay, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { NewestStoriesRequestDto } from '../models/newest-stories-request-dto';
 import { NewestStoriesResponseDto } from '../models/newest-stories-response-dto';
 import { HttpClientService } from '../../../core/services/http-client.service';

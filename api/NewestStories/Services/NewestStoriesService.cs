@@ -22,38 +22,36 @@ namespace NewestStories.Services
 
         public async Task<NewestStoriesResponseDto> GetNewestStoriesAsync(NewestStoriesRequestDto requestDto)
         {
-            bool isPagingApplied = false;
-
             var newestStoriesIds = await GetNewestStoriesIdsAsync();
 
             int totalItemsCount = newestStoriesIds.Count;
+
+            List<StoryDto> returnStories;
 
             if (string.IsNullOrEmpty(requestDto.SearchText))
             {
                 newestStoriesIds = ApplyPaging(newestStoriesIds.AsQueryable(), requestDto.PageIndex, requestDto.PageSize).ToList();
 
-                isPagingApplied = true;
+                returnStories = await FetchStories(newestStoriesIds);
             }
-
-            var stories = await FetchStories(newestStoriesIds);
-
-            var storiesQuery = stories.AsQueryable();
-
-            if (string.IsNullOrEmpty(requestDto.SearchText) == false)
+            else
             {
-                storiesQuery = storiesQuery.Where(q=>q.Title.Contains(requestDto.SearchText));
-            }
+                var storiesQuery = (await FetchStories(newestStoriesIds)).AsQueryable();
 
-            if (isPagingApplied == false)
-            {
+                storiesQuery = storiesQuery.Where(q => q.Title.Contains(requestDto.SearchText));
+
+                totalItemsCount = storiesQuery.Count();
+
                 storiesQuery = ApplyPaging(storiesQuery, requestDto.PageIndex, requestDto.PageSize);
+
+                returnStories = storiesQuery.ToList();
             }
 
             return new NewestStoriesResponseDto
             {
                 PageIndex = requestDto.PageIndex,
                 PageSize = requestDto.PageSize,
-                Stories = storiesQuery.ToList(),
+                Stories = returnStories,
                 TotalItemsCount = totalItemsCount,
                 TotalPages = (int)Math.Ceiling(totalItemsCount / (float)requestDto.PageSize)
             };

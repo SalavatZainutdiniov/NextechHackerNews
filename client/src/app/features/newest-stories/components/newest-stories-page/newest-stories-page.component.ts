@@ -7,7 +7,7 @@ import { Pagination } from '../../../../shared/models/pagination.model';
 import { PaginationComponent } from "../../../../shared/components/pagination/pagination.component";
 import { NewestStoriesRequestDto } from '../../models/newest-stories-request-dto';
 import { NewestStoriesResponseDto } from '../../models/newest-stories-response-dto';
-import { delay } from 'rxjs';
+import { delay, single } from 'rxjs';
 
 @Component({
   selector: 'app-newest-stories-page',
@@ -16,82 +16,30 @@ import { delay } from 'rxjs';
   styleUrl: './newest-stories-page.component.css'
 })
 export class NewestStoriesPageComponent implements OnInit {
+
+  readonly PAGE_SIZE: number = 12;
+
+  animationWaitDelayMs: number = 400;
+
   stories: StoryDto[] = [];
+  loading = signal(false);
+  error = signal<string | null>(null);
+
   isInit = false;
   searchText: string | null = null;
-  loading = signal(false);
-  error: string | null = null;
+  response: NewestStoriesResponseDto | null = null;
 
-  pagination!: Pagination;
+  pagination = signal<Pagination | null>(null);
 
   request: NewestStoriesRequestDto = {
     pageIndex: 1,
-    pageSize: 12,
+    pageSize: this.PAGE_SIZE,
     searchText: ""
   };
-
-  response: NewestStoriesResponseDto | null = null;
 
   private storiesService = inject(NewestStoriesService);
 
   ngOnInit(): void {
-    this.refreshData();
-  }
-
-  refreshData() {
-    this.loading.set(true);
-    this.error = null;
-    this.response = null;
-    this.searchText = null;
-
-    this.storiesService.get(this.request)
-      .pipe(
-        // wait for disappear animation
-        delay(400)
-      )
-      .subscribe({
-        next: (data) => {
-          this.response = data;
-          this.onLoadFinished();
-        },
-        error: () => {
-          this.onLoadError();
-        }
-      });
-  }
-
-  private onLoadError() {
-    this.response = null;
-    this.error = 'Failed to load stories';
-    this.onLoadFinished();
-  }
-
-  private onLoadFinished() {
-    this.loading.set(false);
-
-    if (this.searchText != null) {
-      this.searchByText();
-      return;
-    }
-
-    if (this.response) {
-      this.stories = this.response.stories;
-
-      this.pagination = {
-        selectedPage: this.response.pageIndex,
-        totalPages: this.response.totalPages,
-        pageSize: this.response.pageSize,
-        totalItemsCount: this.response.totalItemsCount
-      };
-      
-      this.isInit = true;
-    }
-  }
-
-  private searchByText(): void {
-    this.request.pageIndex = 1;
-    this.request.searchText = this.searchText ?? "";
-
     this.refreshData();
   }
 
@@ -112,6 +60,65 @@ export class NewestStoriesPageComponent implements OnInit {
     }
 
     this.request.pageIndex = pageIndex;
+
+    this.refreshData();
+  }
+
+  private refreshData() {
+    this.loading.set(true);
+    this.error.set(null);
+
+    this.response = null;
+    this.searchText = null;
+
+    this.storiesService.get(this.request)
+      .pipe(
+      // wait for the animation to disappear
+        delay(this.animationWaitDelayMs)
+      )
+      .subscribe({
+        next: (data) => {
+          this.response = data;
+          this.handleSuccess();
+        },
+        error: () => {
+          this.handleError();
+        }
+      });
+  }
+
+  private handleError() {
+    this.response = null;
+    
+    this.error.set("Failed to load stories");
+    this.loading.set(false);
+  }
+
+  private handleSuccess() {
+    this.loading.set(false);
+
+    if (this.searchText != null) {
+      this.searchByText();
+      return;
+    }
+
+    if (this.response) {
+      this.stories = this.response.stories;
+
+      this.pagination.set({
+        selectedPage: this.response.pageIndex,
+        totalPages: this.response.totalPages,
+        pageSize: this.response.pageSize,
+        totalItemsCount: this.response.totalItemsCount
+      });
+      
+      this.isInit = true;
+    }
+  }
+
+  private searchByText(): void {
+    this.request.pageIndex = 1;
+    this.request.searchText = this.searchText ?? "";
 
     this.refreshData();
   }

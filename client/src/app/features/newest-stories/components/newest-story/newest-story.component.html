@@ -1,6 +1,8 @@
 <div class="story-card">
     <h2 class="story-card-header" [innerHTML]="story.title"></h2>
+    @if (story.url){
     <a [href]="story.url" target="_blank" class="story-card-url">
         Read more ...
     </a>
+    }
 </div>

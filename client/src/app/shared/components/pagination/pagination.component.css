@@ -4,6 +4,10 @@
     @apply   bg-transparent py-3 px-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-2
 }
 
+.pagination-info{
+    @apply text-sm text-white
+}
+
 .page-button{
     @apply p-2 text-white ring-1 ring-gray-300 ring-inset hover:bg-gray-50 hover:text-black cursor-pointer hover:ring-white select-none
 }
