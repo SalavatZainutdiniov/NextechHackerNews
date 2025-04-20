@@ -10,14 +10,12 @@ namespace NewestStories.Services
         private readonly IHackerNewsClient hackerNewsClient;
         private readonly IHackerNewsFetcher hackerNewsFetcher;
         private readonly IMapper mapper;
-        private readonly ILogger<NewestStoriesService> logger;
 
-        public NewestStoriesService(IHackerNewsClient hackerNewsClient, IHackerNewsFetcher hackerNewsFetcher, IMapper mapper, ILogger<NewestStoriesService> logger)
+        public NewestStoriesService(IHackerNewsClient hackerNewsClient, IHackerNewsFetcher hackerNewsFetcher, IMapper mapper)
         {
             this.hackerNewsClient = hackerNewsClient;
             this.hackerNewsFetcher = hackerNewsFetcher;
             this.mapper = mapper;
-            this.logger = logger;
         }
 
         public async Task<NewestStoriesResponseDto> GetNewestStoriesAsync(NewestStoriesRequestDto requestDto)
