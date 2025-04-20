@@ -1,5 +1,29 @@
 @reference "tailwindcss";
 
 .stories-grid{
-    @apply grid gap-4 md:grid-cols-2 lg:grid-cols-3
+    @apply grid gap-4 md:grid-cols-2 lg:grid-cols-3  auto-rows-fr
+}
+
+@keyframes changeOpacity {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.disappear{
+  animation: changeOpacity 1s ease-out forwards;
+}
+
+.appear{
+  animation: changeOpacity 1s ease-out 0.7s forwards;
+}
+
+.appear-immediately{
+  animation: changeOpacity 1s ease-out forwards;
 }

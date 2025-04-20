@@ -12,7 +12,7 @@ namespace NewestStories.Mappings
         {
             CreateMap<HackerNewsStory, StoryDto>()
                 // sanitize HTML
-                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => WebUtility.HtmlEncode(src.Title)))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.title))// WebUtility.HtmlEncode(src.title)))
                 // skip mapping for null values
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }

@@ -4,6 +4,6 @@ namespace NewestStories.Services.Interfaces
 {
     public interface INewestStoriesService
     {
-        Task<List<StoryDto>> GetNewestStoriesAsync(NewestStoriesRequestDto requestDto);
+        Task<NewestStoriesResponseDto> GetNewestStoriesAsync(NewestStoriesRequestDto requestDto);
     }
 }

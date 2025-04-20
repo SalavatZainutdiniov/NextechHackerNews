@@ -36,7 +36,7 @@ namespace NewestStories.Unit.Tests
         [Fact]
         public async Task Get_ReturnsDeserializedObject()
         {
-            var testObject = new HackerNewsStory { Id = 123, Title = "Test Story" };
+            var testObject = new HackerNewsStory { id = 123, title = "Test Story" };
 
             var expectedJson = JsonSerializer.Serialize(testObject);
 

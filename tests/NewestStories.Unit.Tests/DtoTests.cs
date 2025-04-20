@@ -27,16 +27,16 @@ namespace NewestStories.Unit.Tests
         {
             var story = new HackerNewsStory
             {
-                Id = 1,
-                Title = "Test Story",
-                Url = "Url"
+                id = 1,
+                title = "Test Story",
+                url = "Url"
             };
 
             var dto = mapper.Map<StoryDto>(story);
 
-            Assert.Equal(story.Id, dto.Id);
-            Assert.Equal(story.Title, dto.Title);
-            Assert.Equal(story.Url, dto.Url);
+            Assert.Equal(story.id, dto.Id);
+            Assert.Equal(story.title, dto.Title);
+            Assert.Equal(story.url, dto.Url);
         }
 
         [Fact]
@@ -44,15 +44,15 @@ namespace NewestStories.Unit.Tests
         {
             var story = new HackerNewsStory
             {
-                Id = 1,
-                Title = "Test Story",
-                Url = null
+                id = 1,
+                title = "Test Story",
+                url = null
             };
 
             var dto = mapper.Map<StoryDto>(story);
 
-            Assert.Equal(story.Id, dto.Id);
-            Assert.Equal(story.Title, dto.Title);
+            Assert.Equal(story.id, dto.Id);
+            Assert.Equal(story.title, dto.Title);
             Assert.Equal(string.Empty, dto.Url);
         }
 

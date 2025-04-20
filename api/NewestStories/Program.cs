@@ -17,6 +17,17 @@ namespace NewestStories
             builder.Services.Configure<HackerNewsOptions>(
                 builder.Configuration.GetSection("HackerNews"));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    // angular uri
+                    policy.WithOrigins("http://localhost:4200") 
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddMemoryCache(options =>
@@ -55,8 +66,9 @@ namespace NewestStories
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

@@ -20,9 +20,22 @@ namespace NewestStories.Services
             this.logger = logger;
         }
 
-        public async Task<List<StoryDto>> GetNewestStoriesAsync(NewestStoriesRequestDto requestDto)
+        public async Task<NewestStoriesResponseDto> GetNewestStoriesAsync(NewestStoriesRequestDto requestDto)
         {
-            var stories = await FetchStories();
+            bool isPagingApplied = false;
+
+            var newestStoriesIds = await GetNewestStoriesIdsAsync();
+
+            int totalItemsCount = newestStoriesIds.Count;
+
+            if (string.IsNullOrEmpty(requestDto.SearchText))
+            {
+                newestStoriesIds = ApplyPaging(newestStoriesIds.AsQueryable(), requestDto.PageIndex, requestDto.PageSize).ToList();
+
+                isPagingApplied = true;
+            }
+
+            var stories = await FetchStories(newestStoriesIds);
 
             var storiesQuery = stories.AsQueryable();
 
@@ -31,47 +44,48 @@ namespace NewestStories.Services
                 storiesQuery = storiesQuery.Where(q=>q.Title.Contains(requestDto.SearchText));
             }
 
-            int page = requestDto.PageIndex;
-            int pageSize = requestDto.PageSize;
+            if (isPagingApplied == false)
+            {
+                storiesQuery = ApplyPaging(storiesQuery, requestDto.PageIndex, requestDto.PageSize);
+            }
 
-            return storiesQuery
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
+            return new NewestStoriesResponseDto
+            {
+                PageIndex = requestDto.PageIndex,
+                PageSize = requestDto.PageSize,
+                Stories = storiesQuery.ToList(),
+                TotalItemsCount = totalItemsCount,
+                TotalPages = (int)Math.Ceiling(totalItemsCount / (float)requestDto.PageSize)
+            };
         }
 
-        private async Task<List<StoryDto>> FetchStories()
+        private IQueryable<T> ApplyPaging<T>(IQueryable<T> query, int page, int pageSize)
         {
-            var newestStoriesIds = await GetNewestStoriesIdsAsync();
+            return query.Skip((page - 1) * pageSize)
+                .Take(pageSize);
+        }
 
-            List<int>? notFoundStoriesIds = null;
-
+        private async Task<List<StoryDto>> FetchStories(List<int> storiesIds)
+        {
             var stories = new List<StoryDto>();
 
-            foreach (var id in newestStoriesIds)
+            foreach (var id in storiesIds)
             {
                 var hackerStory = await hackerNewsFetcher.GetStoryByIdAsync(id);
 
                 if (hackerStory == null)
                 {
-                    if (notFoundStoriesIds == null)
+                    hackerStory = new Models.HackerNewsAPI.HackerNewsStory
                     {
-                        notFoundStoriesIds = new List<int>();
-                    }
-
-                    notFoundStoriesIds.Add(id);
-
-                    continue;
+                        id = -1,
+                        title = "Story fetch error",
+                        url = ""
+                    };
                 }
 
                 var storyDto = mapper.Map<StoryDto>(hackerStory);
 
                 stories.Add(storyDto);
-            }
-
-            if (notFoundStoriesIds != null)
-            {
-                logger.LogWarning($"Failed to fetch stories: {string.Join(",", notFoundStoriesIds)}");
             }
 
             return stories;

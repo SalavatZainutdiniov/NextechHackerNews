@@ -50,8 +50,8 @@ namespace NewestStories.Unit.Tests
             {
                 hackerStories.Add(new HackerNewsStory
                 {
-                    Id = id,
-                    Title = $"Title {id}",
+                    id = id,
+                    title = $"Title {id}",
                 });
             }
 
@@ -61,7 +61,7 @@ namespace NewestStories.Unit.Tests
                     .ReturnsAsync(hackerStories[i]);
 
                 mapperMock.Setup(m => m.Map<StoryDto>(hackerStories[i]))
-                    .Returns(new StoryDto { Id = hackerStories[i].Id, Title = hackerStories[i].Title });
+                    .Returns(new StoryDto { Id = hackerStories[i].id, Title = hackerStories[i].title });
             }
 
             var requestDto = new NewestStoriesRequestDto
@@ -70,7 +70,7 @@ namespace NewestStories.Unit.Tests
                 PageSize = pageSize,
             };
 
-            var foundStories = await service.GetNewestStoriesAsync(requestDto);
+            var foundStories = (await service.GetNewestStoriesAsync(requestDto)).Stories;
 
             var resultsCount = Math.Min(pageSize, Math.Max(0, count - (pageIndex - 1) * pageSize));
             var beginId = (pageIndex - 1) * pageSize + 1;
@@ -134,8 +134,8 @@ namespace NewestStories.Unit.Tests
 
                 hackerStories.Add(new HackerNewsStory
                 {
-                    Id = id,
-                    Title = title,
+                    id = id,
+                    title = title,
                 });
             }
 
@@ -145,7 +145,7 @@ namespace NewestStories.Unit.Tests
                     .ReturnsAsync(hackerStories[i]);
 
                 mapperMock.Setup(m => m.Map<StoryDto>(hackerStories[i]))
-                    .Returns(new StoryDto { Id = hackerStories[i].Id, Title = hackerStories[i].Title });
+                    .Returns(new StoryDto { Id = hackerStories[i].id, Title = hackerStories[i].title });
             }
 
             var requestDto = new NewestStoriesRequestDto
@@ -155,7 +155,7 @@ namespace NewestStories.Unit.Tests
                 SearchText = SEARCH_TEMPLATE
             };
 
-            var foundStories = await service.GetNewestStoriesAsync(requestDto);
+            var foundStories = (await service.GetNewestStoriesAsync(requestDto)).Stories;
 
             Assert.Equal(Math.Min(count, storiesCount), foundStories.Count);
 
@@ -202,8 +202,8 @@ namespace NewestStories.Unit.Tests
             {
                 hackerStories.Add(new HackerNewsStory
                 {
-                    Id = id,
-                    Title = $"Title {id}",
+                    id = id,
+                    title = $"Title {id}",
                 });
             }
 
@@ -222,7 +222,7 @@ namespace NewestStories.Unit.Tests
                     .ReturnsAsync(hackerStories[i]);
 
                 mapperMock.Setup(m => m.Map<StoryDto>(hackerStories[i]))
-                    .Returns(new StoryDto { Id = hackerStories[i].Id, Title = hackerStories[i].Title });
+                    .Returns(new StoryDto { Id = hackerStories[i].id, Title = hackerStories[i].title });
             }
 
             var requestDto = new NewestStoriesRequestDto
@@ -231,7 +231,7 @@ namespace NewestStories.Unit.Tests
                 PageSize = NewestStoriesRequestDto.MAX_PAGE_SIZE,
             };
 
-            var foundStories = await service.GetNewestStoriesAsync(requestDto);
+            var foundStories = (await service.GetNewestStoriesAsync(requestDto)).Stories;
 
             var resultsCount = count - Math.Min(count, fetchesErrorsCount);
 

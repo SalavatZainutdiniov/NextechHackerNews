@@ -18,9 +18,9 @@ namespace NewestStories.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery]NewestStoriesRequestDto requestDto)
         {
-            var stories = await newestStoriesService.GetNewestStoriesAsync(requestDto);
+            var responseDto = await newestStoriesService.GetNewestStoriesAsync(requestDto);
 
-            return Ok(new NewestStoriesResponseDto { Stories = stories });
+            return Ok(responseDto);
         }
     }
 }

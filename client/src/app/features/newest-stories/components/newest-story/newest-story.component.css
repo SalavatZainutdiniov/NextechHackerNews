@@ -1,11 +1,11 @@
 @reference "tailwindcss";
 
 .story-card{
-    @apply bg-gray-800 text-white rounded-xl p-5
+    @apply bg-gray-800 text-white rounded-xl p-5 h-full justify-between flex flex-col
 }
 
 .story-card-header{
-    @apply text-xl font-semibold mb-3 text-white
+    @apply text-2xl font-semibold mb-3 text-white
 }
 
 .story-card-url{

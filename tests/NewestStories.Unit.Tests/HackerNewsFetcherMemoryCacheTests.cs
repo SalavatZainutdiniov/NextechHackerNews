@@ -43,7 +43,7 @@ namespace NewestStories.Unit.Tests
             var service = CreateService();
 
             int id = 123;
-            var story = new HackerNewsStory { Id = id, Title = "Test story" };
+            var story = new HackerNewsStory { id = id, title = "Test story" };
 
             innerFetcherMock.Setup(x => x.GetStoryByIdAsync(id))
                 .ReturnsAsync(story)

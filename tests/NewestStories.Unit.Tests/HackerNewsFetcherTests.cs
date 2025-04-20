@@ -16,18 +16,18 @@ namespace NewestStories.Unit.Tests
 
             var story = new HackerNewsStory
             {
-                Id = 1,
-                Title = "Sample Title"
+                id = 1,
+                title = "Sample Title"
             };
 
             mockClient
-                .Setup(client => client.GetAsync<HackerNewsStory>($"item/{story.Id}.json"))
+                .Setup(client => client.GetAsync<HackerNewsStory>($"item/{story.id}.json"))
                 .ReturnsAsync(story);
 
             var fetcher = new HackerNewsFetcher(mockClient.Object);
 
             // Act
-            var result = await fetcher.GetStoryByIdAsync(story.Id);
+            var result = await fetcher.GetStoryByIdAsync(story.id);
 
             // Assert
             Assert.Equal(story, result);

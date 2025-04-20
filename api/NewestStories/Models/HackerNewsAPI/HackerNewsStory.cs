@@ -2,10 +2,8 @@
 {
     public class HackerNewsStory
     {
-        public int Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string? Url { get; set; }
-        public bool? Deleted { get; set; }
-        public bool? Dead { get; set; }
+        public int id { get; set; }
+        public string title { get; set; } = string.Empty;
+        public string? url { get; set; }
     }
 }

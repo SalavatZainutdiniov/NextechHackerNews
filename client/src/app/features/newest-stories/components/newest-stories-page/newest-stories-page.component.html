@@ -2,19 +2,30 @@
     <div class="flex mb-4">
         <app-search-bar class="flex-grow" (search)="onSearch($event)"></app-search-bar>
     </div>
-    @if (loading)
-    {
-    <div class="text-gray-600">Loading...</div>
-    }
-    @else if (error) {
+    @if (error) {
     <div class="text-red-500">{{ error }}</div>
     }
     @else {
-    <div class="stories-grid mb-4">
-        @for (story of stories; track story.id){
-        <app-newest-story [story]="story"></app-newest-story>
+    @if (isInit){
+    <app-pagination [pagination]="this.pagination" (change)="onPageChanged($event)"></app-pagination>
+    }
+
+    <div class="relative">
+        <div class="stories-grid my-4">
+            @for (story of stories; track story.id){
+            <app-newest-story [story]="story"></app-newest-story>
+            }
+        </div>
+        @if (loading()){
+        <div class="absolute inset-0 flex flex-row bg-gray-900 disappear">
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center w-full h-[calc(100dvh-250px)]">
+            <div class="opacity-0" [class.appear]="isInit" [class.appear-immediately]="isInit == false">
+                <div class="w-16 h-16 bg-gray-50 opacity-100 rounded-2xl animate-spin "></div>
+                <p class="pt-5 font-bold -ml-3">Please Wait...</p>
+            </div>
+        </div>
         }
     </div>
-    <app-pagination [pagination]="this.pagination"></app-pagination>
     }
 </div>
