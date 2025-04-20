@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClientService } from './http-client.service';
+import { environment } from '../../../environments/environment';
 
 describe('HttpClientService', () => {
     let service: HttpClientService;
@@ -22,6 +23,11 @@ describe('HttpClientService', () => {
 
     it('should be created', () => {
         expect(service).toBeTruthy();
+    });
+
+    it('should create expected url', () => {
+        const url = service.createUrl('items/1');
+        expect(url).toBe(environment.apiUrl + 'items/1');
     });
 
     it('should make GET request and return expected data', () => {

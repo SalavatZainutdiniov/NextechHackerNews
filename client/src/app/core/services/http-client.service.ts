@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private apiUrl = 'https://localhost:7128/api/'
+  private apiUrl = environment.apiUrl;
 
   private http = inject(HttpClient);
 
