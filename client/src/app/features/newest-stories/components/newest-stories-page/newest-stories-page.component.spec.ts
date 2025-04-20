@@ -3,6 +3,8 @@ import { NewestStoriesPageComponent } from './newest-stories-page.component';
 import { NewestStoriesService } from '../../services/newest-stories.service';
 import { of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { By } from '@angular/platform-browser';
+import { SearchBarComponent } from '../../../../shared/components/search-bar/search-bar.component';
 
 describe('NewestStoriesPageComponent', () => {
     let component: NewestStoriesPageComponent;
@@ -85,7 +87,9 @@ describe('NewestStoriesPageComponent', () => {
 
         mockService.get.and.returnValue(of(mockResponse).pipe(delay(5)));
 
-        component.onSearch('Angular');
+        const searchBarComponent: SearchBarComponent = fixture.debugElement.query(By.directive(SearchBarComponent)).componentInstance;
+
+        searchBarComponent.search.emit('Angular');
         tick(10);
 
         expect(component.request.searchText).toBe('Angular');
