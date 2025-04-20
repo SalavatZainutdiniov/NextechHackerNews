@@ -31,7 +31,8 @@ describe('HttpClientService', () => {
             expect(data).toEqual(mockData);
         });
 
-        const req = httpMock.expectOne('https://localhost:7128/api/items/1');
+
+        const req = httpMock.expectOne(service.createUrl('items/1'));
         expect(req.request.method).toBe('GET');
         req.flush(mockData); // send fake response
     });

@@ -5,14 +5,12 @@ import { Routes } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 
-// Dummy components for routing test
 @Component({ standalone: true, template: '' })
 class DummyHotNewsComponent { }
 
 @Component({ standalone: true, template: '' })
 class DummyContactComponent { }
 
-// Define routes for testing
 const routes: Routes = [
     { path: '', component: DummyHotNewsComponent },
     { path: 'newest-stories', component: DummyHotNewsComponent },

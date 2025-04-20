@@ -11,7 +11,11 @@ export class HttpClientService {
 
   private http = inject(HttpClient);
 
+  public createUrl(path: string): string{
+    return this.apiUrl + path;
+  }
+
   public get<T>(path: string):Observable<T> {
-    return this.http.get<T>(this.apiUrl + path);
+    return this.http.get<T>(this.createUrl(path));
   }
 }

@@ -73,7 +73,7 @@ export class NewestStoriesPageComponent implements OnInit {
 
     this.storiesService.get(this.request)
       .pipe(
-      // wait for the animation to disappear
+        // wait for the animation to disappear
         delay(this.animationWaitDelayMs)
       )
       .subscribe({
@@ -89,7 +89,7 @@ export class NewestStoriesPageComponent implements OnInit {
 
   private handleError() {
     this.response = null;
-    
+
     this.error.set("Failed to load stories");
     this.loading.set(false);
   }
@@ -111,7 +111,7 @@ export class NewestStoriesPageComponent implements OnInit {
         pageSize: this.response.pageSize,
         totalItemsCount: this.response.totalItemsCount
       });
-      
+
       this.isInit = true;
     }
   }
