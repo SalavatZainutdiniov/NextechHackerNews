@@ -17,12 +17,15 @@ namespace NewestStories
             builder.Services.Configure<HackerNewsOptions>(
                 builder.Configuration.GetSection("HackerNews"));
 
+            var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+              ?? builder.Configuration["Cors__AllowedOrigins"]?.Split(",")
+              ?? [];
+
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    // angular uri
-                    policy.WithOrigins("http://localhost:4200") 
+                    policy.WithOrigins(origins) 
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
