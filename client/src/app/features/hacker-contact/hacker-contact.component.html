@@ -1,0 +1,31 @@
+<div class="hacker-contact">
+    <h1 class="hacker-contact-header">💻 Hacker Contact Form</h1>
+
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+            <label for="alias" class="block mb-1">Hacker Alias</label>
+            <input id="alias" formControlName="alias" type="text" class="hacker-input" />
+        </div>
+
+        <div>
+            <label for="email" class="block mb-1">Encrypted Email</label>
+            <input id="email" formControlName="email" type="email" class="hacker-input" placeholder="encrypted@gmail.com" />
+            @if (showEncryptionError) {
+            <div class="text-red-400 text-sm mt-1">❗ Please enter encrypted email.</div>
+            }
+        </div>
+
+        <div>
+            <label for="message" class="block mb-1">Secret Transmission</label>
+            <textarea id="message" formControlName="message" rows="4" class="hacker-input"
+                placeholder="Drop your payload here..."></textarea>
+        </div>
+
+        <button type="submit" class="hacker-submit">🚀 Send Packet</button>
+    </form>
+
+    <div class="text-center text-sm text-gray-400 mt-6">
+        🐍 PGP not required<br />
+        ☠️ No spam. Just elite transmissions.
+    </div>
+</div>
