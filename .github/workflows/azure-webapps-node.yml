@@ -30,8 +30,8 @@ jobs:
           npm run build
           npx ng test
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Zip client folder excluding .spec.ts files for deployment
+        run: zip -r release.zip client -x "**/*.spec.ts"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
