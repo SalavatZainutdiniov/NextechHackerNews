@@ -28,7 +28,7 @@ jobs:
           cd client
           npm install
           npm run build
-          ng test
+          npx ng test
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
