@@ -8,7 +8,7 @@ describe('SearchBarComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [SearchBarComponent, ReactiveFormsModule], // Component is standalone
+            imports: [SearchBarComponent, ReactiveFormsModule],
         }).compileComponents();
 
         fixture = TestBed.createComponent(SearchBarComponent);
@@ -21,29 +21,28 @@ describe('SearchBarComponent', () => {
     });
 
     it('should emit search value after debounce time', fakeAsync(() => {
-        spyOn(component.search, 'emit');
+        const emitSpy = jest.spyOn(component.search, 'emit');
 
-        // Simulate user input
         component.searchControl.setValue('hacker');
         fixture.detectChanges();
 
-        tick(component.debounceTimeMs()); // Wait for debounce
+        tick(component.debounceTimeMs());
         fixture.detectChanges();
 
-        expect(component.search.emit).toHaveBeenCalledWith('hacker');
+        expect(emitSpy).toHaveBeenCalledWith('hacker');
     }));
 
     it('should emit only distinct values', fakeAsync(() => {
-        spyOn(component.search, 'emit');
+        const emitSpy = jest.spyOn(component.search, 'emit');
 
         component.searchControl.setValue('angular');
         tick(component.debounceTimeMs());
         fixture.detectChanges();
 
-        component.searchControl.setValue('angular'); // same value
+        component.searchControl.setValue('angular');
         tick(component.debounceTimeMs());
         fixture.detectChanges();
 
-        expect(component.search.emit).toHaveBeenCalledTimes(1); // emitted only once
+        expect(emitSpy).toHaveBeenCalledTimes(1);
     }));
 });

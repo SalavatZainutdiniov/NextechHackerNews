@@ -7,10 +7,12 @@ import { NewestStoriesResponseDto } from '../models/newest-stories-response-dto'
 
 describe('NewestStoriesService', () => {
     let service: NewestStoriesService;
-    let mockHttpClientService: jasmine.SpyObj<HttpClientService>;
+    let mockHttpClientService: { get: jest.Mock };
 
     beforeEach(() => {
-        mockHttpClientService = jasmine.createSpyObj('HttpClientService', ['get']);
+        mockHttpClientService = {
+            get: jest.fn()
+        };
 
         TestBed.configureTestingModule({
             providers: [
@@ -41,13 +43,14 @@ describe('NewestStoriesService', () => {
             totalItemsCount: 1
         };
 
-        mockHttpClientService.get.and.returnValue(of(mockResponse));
+        mockHttpClientService.get.mockReturnValue(of(mockResponse));
 
         service.get(request).subscribe(response => {
             expect(response).toEqual(mockResponse);
         });
 
         const expectedUrl = `neweststories?pageIndex=1&pageSize=10&searchText=test`;
+
         expect(mockHttpClientService.get).toHaveBeenCalledWith(expectedUrl);
     });
 });

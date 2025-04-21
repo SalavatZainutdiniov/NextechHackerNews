@@ -1,24 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 import { HttpClientService } from './http-client.service';
 import { environment } from '../../../environments/environment';
+import { of } from 'rxjs';
 
 describe('HttpClientService', () => {
     let service: HttpClientService;
-    let httpMock: HttpTestingController;
+    let mockHttpClient: jest.Mocked<HttpClient>;
 
     beforeEach(() => {
+        mockHttpClient = {
+            get: jest.fn(),
+        } as any;
+
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [HttpClientService]
+            providers: [
+                HttpClientService,
+                { provide: HttpClient, useValue: mockHttpClient }
+            ]
         });
 
         service = TestBed.inject(HttpClientService);
-        httpMock = TestBed.inject(HttpTestingController);
-    });
-
-    afterEach(() => {
-        httpMock.verify(); // ensure no outstanding requests
     });
 
     it('should be created', () => {
@@ -33,13 +35,12 @@ describe('HttpClientService', () => {
     it('should make GET request and return expected data', () => {
         const mockData = { id: 1, name: 'Test Item' };
 
+        mockHttpClient.get.mockReturnValue(of(mockData));
+
         service.get<{ id: number; name: string }>('items/1').subscribe(data => {
             expect(data).toEqual(mockData);
         });
 
-
-        const req = httpMock.expectOne(service.createUrl('items/1'));
-        expect(req.request.method).toBe('GET');
-        req.flush(mockData); // send fake response
+        expect(mockHttpClient.get).toHaveBeenCalledWith(service.createUrl('items/1'));
     });
 });

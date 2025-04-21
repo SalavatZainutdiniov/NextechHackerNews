@@ -9,20 +9,22 @@ import { SearchBarComponent } from '../../../../shared/components/search-bar/sea
 describe('NewestStoriesPageComponent', () => {
     let component: NewestStoriesPageComponent;
     let fixture: ComponentFixture<NewestStoriesPageComponent>;
-    let mockService: jasmine.SpyObj<NewestStoriesService>;
+    let mockService: jest.Mocked<NewestStoriesService>;
 
     beforeEach(() => {
-        const spy = jasmine.createSpyObj('NewestStoriesService', ['get']);
+        // Create Jest mock function
+        mockService = {
+            get: jest.fn()
+        } as any;
 
         TestBed.configureTestingModule({
             providers: [
-                { provide: NewestStoriesService, useValue: spy }
+                { provide: NewestStoriesService, useValue: mockService }
             ]
         });
 
         fixture = TestBed.createComponent(NewestStoriesPageComponent);
         component = fixture.componentInstance;
-        mockService = TestBed.inject(NewestStoriesService) as jasmine.SpyObj<NewestStoriesService>;
 
         component.animationWaitDelayMs = 0;
     });
@@ -36,26 +38,26 @@ describe('NewestStoriesPageComponent', () => {
             stories: [{ id: 1, title: 'Story', url: 'http://test.com' }]
         };
 
-        mockService.get.and.returnValue(of(mockResponse).pipe(delay(5)));
+        mockService.get.mockReturnValue(of(mockResponse).pipe(delay(5)));
 
         component.ngOnInit();
-        expect(component.loading()).toBeTrue();
+        expect(component.loading()).toBe(true);
 
         tick(10);
 
         expect(component.stories.length).toBe(1);
-        expect(component.loading()).toBeFalse();
+        expect(component.loading()).toBe(false);
         expect(component.pagination()?.totalPages).toBe(1);
     }));
 
     it('should handle error from service', fakeAsync(() => {
-        mockService.get.and.returnValue(throwError(() => new Error('error')).pipe(delay(5)));
+        mockService.get.mockReturnValue(throwError(() => new Error('error')).pipe(delay(5)));
 
         component.ngOnInit();
         tick(10);
 
         expect(component.error()).toBe('Failed to load stories');
-        expect(component.loading()).toBeFalse();
+        expect(component.loading()).toBe(false);
     }));
 
     it('should update page index and refresh on page change', fakeAsync(() => {
@@ -67,7 +69,7 @@ describe('NewestStoriesPageComponent', () => {
             stories: [{ id: 99, title: 'New Page', url: 'https://story.com' }]
         };
 
-        mockService.get.and.returnValue(of(mockResponse).pipe(delay(5)));
+        mockService.get.mockReturnValue(of(mockResponse).pipe(delay(5)));
 
         component.onPageChanged(2);
         tick(10);
@@ -85,7 +87,7 @@ describe('NewestStoriesPageComponent', () => {
             stories: [{ id: 2, title: 'Search Result', url: 'https://story.com' }]
         };
 
-        mockService.get.and.returnValue(of(mockResponse).pipe(delay(5)));
+        mockService.get.mockReturnValue(of(mockResponse).pipe(delay(5)));
 
         const searchBarComponent: SearchBarComponent = fixture.debugElement.query(By.directive(SearchBarComponent)).componentInstance;
 
